@@ -35,6 +35,17 @@ Criei a aplicação da sequência de Fibonacci que retorna a posição na sequê
 * Ainda não sei se é possível testar aplicações que recebem input de usuário.
 * Modifiquei o código para tentar mockar um método que faz o Scanln, mas sem sucesso. Com isso, percebi que não entendo direito o processo de mock.
 * Dado a falha de mock, preciso colocar no backlog o estudo do mesmo.
+
+
+### 23/07/2026
+
+Hoje eu decidi retormar o desafio e com isso, me motivou a deixar o Github mas bonito, a fim de deixá-lo como portifólio. 
+
+### 24 e 25/07/2026
+https://www.codewars.com/
+
+Estou resolvendo desafios do codewars em Go.
+
 <!--- 
 **Link to work:** [Calculator App](http://www.example.com)
 

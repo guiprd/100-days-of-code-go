@@ -1,6 +1,9 @@
 package main
 
-import "slices"
+import (
+	"fmt"
+	"slices"
+)
 
 /*
 John and Mary want to travel between a few towns A, B, C ... Mary has on a sheet of paper a list of distances between these towns. ls = [50, 55, 57, 58, 60]. John is tired of driving and he says to Mary that he doesn't want to drive more than t = 174 miles and he will visit only 3 towns.
@@ -29,65 +32,46 @@ in some languages this "list" is in fact a string (see the Sample Tests).
 */
 
 func main() {
-
+	ts := []int{50, 55, 57, 58, 60, 72, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240, 250, 260, 270, 280, 290, 300, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000}
+	result := ChooseBestSum(2121, 12, ts)
+	fmt.Println(result)
 }
 
 func ChooseBestSum(t, k int, ls []int) int {
 	var sums []int
-	size := len(ls)
+	filtered := make([]int, 0, len(ls))
 	slices.Sort(ls)
-	for i := size - 1; i >= 0; i-- {
-		if ls[i] > t {
-			ls = slices.Delete(ls, i, i+1)
+	for _, v := range ls {
+		if v <= t {
+			filtered = append(filtered, v)
 		} else {
 			break
 		}
 	}
-	var topSum int
-	if k > size {
+	if len(filtered) < k {
 		return -1
 	}
-	if k == size {
-		for _, val := range ls {
-			topSum += val
-		}
-		if topSum > t {
-			return -1
-		}
-		return topSum
-	}
-	topSum = 0
-	for i := 0; i < size; i++ {
-		kSlices := InteractiveBuildSums(k, ls[i+1:])
-		for _, sum := range kSlices {
-			for _, val := range sum {
-				topSum += val
-			}
-			if topSum > t {
-				continue
-			} else {
-				sums = append(sums, topSum)
-			}
-		}
-	}
+	buildSums(0, 0, k, 0, t, filtered, &sums)
+
 	if len(sums) == 0 {
 		return -1
 	}
+
 	slices.Sort(sums)
+	fmt.Println(len(sums))
+
 	return sums[len(sums)-1]
 }
 
-func InteractiveBuildSums(k int, ls []int) (int, []int) {
-	var result []int
-	if count := len(ls); count < k {
-		return 0, nil
-	}
-	for i := 0; i < len(ls); i++ {
-		val, subResult := InteractiveBuildSums(k, ls[i+1:])
-		if subResult != nil {
-			result = append(result, val)
-			result = append(result, subResult...)
+func buildSums(start, depth, k, currentSum, t int, ls []int, sums *[]int) {
+	if depth == k {
+		if currentSum <= t {
+			*sums = append(*sums, currentSum)
 		}
+		return
 	}
-	return nil
+
+	for i := start; i < len(ls); i++ {
+		buildSums(i+1, depth+1, k, currentSum+ls[i], t, ls, sums)
+	}
 }
